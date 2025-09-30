@@ -1,0 +1,203 @@
+---
+title: "viz_1"
+author: "Haohua Chen"
+date: "2025-09-25"
+output: html_document
+---
+
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggridges)
+library(p8105.datasets)
+```
+
+```{r}
+data("weather_df")
+
+
+
+```
+
+
+
+```{r}
+ggplot(weather_df, aes(x = tmin, y = tmax))+
+    geom_point()
+
+```
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax))+
+  geom_point()
+```
+
+
+## Fancier scatterplots!
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name))+
+  geom_point(alpha = 0.3) +
+  geom_smooth(se = FALSE)
+```
+
+
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax))+
+  geom_point(aes(color = name, size = prcp)
+             ,alpha = 0.3)+
+  geom_smooth(se = FALSE)
+```
+
+
+use faceting real quick
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax))+
+  geom_point(aes(color = name)
+             ,alpha = 0.3, size = 0.8)+
+  geom_smooth(se = FALSE)+
+  facet_grid(name ~ .)
+```
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name))+
+  geom_point(aes(size = prcp), alpha = 0.3)+
+  geom_smooth(se = FALSE)+
+  facet_grid(. ~ name)
+```
+
+
+```{r}
+weather_df |> 
+  filter(name == "CentralPark_NY") |> 
+  mutate(
+    tmax_fahr = tmax * (9/5) + 32,
+    tmin_fahr = tmin * (9/5) +32) |> 
+  ggplot(aes(x = tmin_fahr, y = tmax_fahr))+
+    geom_point()+
+    geom_smooth(se = FALSE)
+  
+```
+## Small things
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name, shape = name))+
+  geom_smooth(se = FALSE)+
+  geom_point(aes(color = name))
+  
+
+
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax, color = name, shape = name))+
+  #geom_point(aes(color = name) ,alpha = 0.3, size = 0.8)+
+  geom_smooth(se = FALSE)
+
+```
+```{r}
+weather_df |> 
+    ggplot(aes(x =  tmin, y = tmax))+
+    geom_hex()
+```
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax))+
+    geom_point(color = "#086bfd")
+```
+
+## Univariate plots
+
+```{r}
+
+weather_df |> 
+  ggplot(aes(x = tmin))+
+  geom_histogram(color = "white", fill = "red")
+```
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, fill = name))+
+  geom_histogram(color = "black")
+```
+
+```{r}
+weather_df |> 
+    ggplot(aes(x = tmin, fill = name))+
+    geom_density(alpha = 0.2)
+```
+```{r}
+weather_df |> 
+  ggplot(aes(x = name, y = tmin))+
+  geom_boxplot(aes(fill = name))
+```
+
+
+
+violin plots
+```{r}
+weather_df |> 
+  ggplot(aes(x = name, y= tmin))+
+  geom_violin(aes(fill = name))
+  
+```
+ridge plot
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = name))+
+  geom_density_ridges(aes(fill = name, alpha = 0.3))
+```
+```{r}
+weather_df |> 
+  ggplot(aes(x = prcp, fill = name))+
+  geom_density(alpha = 0.2)
+
+weather_df |> 
+  ggplot(aes(x = prcp,fill = name))+
+  geom_histogram()+
+  facet_grid(name ~.)
+
+
+weather_df |> 
+  filter(prcp >50, prcp <1000) |> 
+  ggplot(aes(x = prcp, fill = name))+
+  geom_density(alpha = 0.2)
+
+
+```
+```{r}
+ggp_weather_violin = 
+    weather_df |> 
+  ggplot(aes(x = name, y = tmin, fill = name))+
+    geom_violin()
+
+ggp_weather_violin
+
+ggsave("ggp_weather_violin.pdf", ggp_weather_violin, width = 8, height = 6)
+
+```
+embedding plots
+
+```{r, fig.width = 6, fig.height = 4}
+ggp_weather_violin
+```
+
+```{python}
+def hellowworld(x,y):
+  if x in ("fuck", "shit") :
+    x = "language!!!"
+    return x
+  else:
+    return x + " " +  y
+
+hellowworld("fuck", "world")
+```
+
+

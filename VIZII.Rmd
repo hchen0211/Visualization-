@@ -1,0 +1,49 @@
+---
+title: "VIZII"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggridges)
+library(p8105.datasets)
+```
+
+```{r}
+data("weather_df")
+
+
+
+```
+
+
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point(aes(color = name), alpha = 0.5)+
+  labs(
+    x = "Minimum daily temp",
+    y = "Maximum daliy temp",
+    title = "Temperature scatterplot",
+    caption = "Location"
+  )
+```
+```{r}
+weather_df |> 
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point(aes(color = name), alpha = 0.5)+
+  labs(
+    x = "Minimum daily temp",
+    y = "Maximum daliy temp",
+    title = "Temperature scatterplot",
+    caption = "Location"
+  )+
+  scale_x_continuous(
+    breaks = c(-20,0,25),
+    labels = c("-20C" , "0" , "25")
+  )+
+  viridis::scale_color_viridis(discrete =TRUE)
+  #scale_color_hue(h = c(100,300))
+  
+```
